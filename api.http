@@ -1,0 +1,7 @@
+POST  https://lvs9yg3zyh.execute-api.us-east-1.amazonaws.com/dev/login
+content-type: application/json
+
+{
+ "username": "RiazL",
+ "password": "Razor@123"
+}
