@@ -5,8 +5,8 @@ import CustomButton from '../components/CustomButton';
 
 const loginFunction = async (credentials) => {
 	let response;
-	try{
-		 response = await fetch('https://lvs9yg3zyh.execute-api.us-east-1.amazonaws.com/dev/login', {
+	try {
+		response = await fetch('https://lvs9yg3zyh.execute-api.us-east-1.amazonaws.com/dev/login', {
 			method: 'POST',
 			headers: {
 				Accept: 'application/json',
@@ -16,22 +16,22 @@ const loginFunction = async (credentials) => {
 		})
 
 		response = await response.json()
-	} catch(e) {
+	} catch (e) {
 		response = {
 			error: e.message
-		 };
-		 
+		};
+
 	}
 
-		return response;
+	return response;
 };
 
 const login = ({ navigation }) => {
-	const [ username, setUsername ] = useState('');
-	const [ password, setPassword ] = useState('');
+	const [username, setUsername] = useState('');
+	const [password, setPassword] = useState('');
 	return (
 		<ImageBackground source={require('../assets/login_bg.jpg')} style={{ width: '100%', height: '100%' }}>
-			<View style={[ styles.container ]}>
+			<View style={[styles.container]}>
 				<View
 					style={{
 						flexDirection: 'row',
@@ -46,7 +46,7 @@ const login = ({ navigation }) => {
 					<Image style={{ width: 122, height: 55 }} source={require('../assets/logo_login_screen.png')} />
 				</View>
 				<View style={{ paddingTop: 30, paddingBottom: 20 }} />
-				<View style={[ styles.username ]}>
+				<View style={[styles.username]}>
 					<View
 						style={{
 							borderWidth: 1,
@@ -67,7 +67,7 @@ const login = ({ navigation }) => {
 						/>
 					</View>
 				</View>
-				<View style={[ styles.username ]}>
+				<View style={[styles.username]}>
 					<View
 						style={{
 							borderWidth: 1,
@@ -90,24 +90,24 @@ const login = ({ navigation }) => {
 					</View>
 				</View>
 				<View>
-					<View style={[ styles.postionCenter ]}>
+					<View style={[styles.postionCenter]}>
 						{/* <CustomButton name="Login" onPress={() => navigation.navigate('Logger')} /> */}
 						<CustomButton name="Login" onPress={async () => {
-								const data = await loginFunction({
-									username,
-									password
-								})
+							const data = await loginFunction({
+								username,
+								password
+							})
 
-								if(data.error){
-									console.log(data)
-									return;
-								}
+							if (data.error) {
+								console.log(data)
+								return;
+							}
 
-								navigation.navigate('Logger',
+							navigation.navigate('Logger',
 								{
 									info: data,
-									username:username,
-									password:password
+									username: username,
+									password: password
 								})
 						}} />
 					</View>
