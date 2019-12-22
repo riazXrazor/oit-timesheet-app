@@ -17,11 +17,11 @@ export default StyleSheet.create({
 		position: 'relative',
 		borderWidth: 1,
 		borderRadius: 5,
-		borderStyle: 'dashed',
+		// borderStyle: 'dashed',
 		borderColor: '#fff',
 		marginBottom: 10
 	},
-	borderDottedStyling:{
+	borderDottedStyling: {
 		borderWidth: 1,
 		borderRadius: 5,
 		borderStyle: 'dashed',

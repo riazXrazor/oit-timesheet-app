@@ -1,4 +1,4 @@
-package com.rentcollector;
+package com.oittimesheetapp;
 
 import android.app.Application;
 import android.content.Context;
