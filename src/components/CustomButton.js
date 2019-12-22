@@ -1,34 +1,33 @@
 import React, { useState } from 'react';
 import {
 	Text,
-	Image,
-	TextInput,
-	View,
 	StyleSheet,
-	ImageBackground,
-	Button,
-	Alert,
-	TouchableOpacity
+	ActivityIndicator,
+	TouchableOpacity,
+	View
 } from 'react-native';
 const CustomButton = (props) => {
-    console.log(props);
-    return(
-        <View style={[ styles.postionCenter ]}>
-					<TouchableOpacity
-						style={{
-							alignItems: 'center',
-							width: 120,
-							backgroundColor: 'green',
-							padding: 15,
-							borderRadius: 5,
-							marginBottom: 10
-						}}
-						onPress={props.onPress}
-					>
-						<Text style={{ color: '#fff', fontSize: 15 }}>{props.name}</Text>
-					</TouchableOpacity>
-				</View>
-    );
+	return (
+		<View style={[styles.postionCenter, { ...props.style }]}>
+			{!props.loading ? <TouchableOpacity
+				style={{
+					alignItems: 'center',
+					width: 120,
+					backgroundColor: 'green',
+					padding: 15,
+					borderRadius: 15,
+					marginBottom: 10,
+				}}
+				onPress={!props.disabled ? props.onPress : () => { }}
+			>
+				<Text style={{ color: '#fff', fontSize: 18 }}>{props.name}</Text>
+			</TouchableOpacity> : <ActivityIndicator style={{
+				padding: 15,
+				borderRadius: 15,
+				marginBottom: 10,
+			}} size="small" color="green" />}
+		</View>
+	);
 }
 export default CustomButton;
 const styles = StyleSheet.create({

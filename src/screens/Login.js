@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
-import { Image, View, Button, StyleSheet, ImageBackground } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import { Image, View, StyleSheet, ImageBackground } from 'react-native';
+import AsyncStorage from "@react-native-community/async-storage"
+import Toast from 'react-native-root-toast';
 import CustomInput from '../components/CustomInput';
 import CustomButton from '../components/CustomButton';
 
@@ -29,87 +31,84 @@ const loginFunction = async (credentials) => {
 const login = ({ navigation }) => {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [loading, setLoading] = useState(false);
+	const [btnActive, setBtnActive] = useState(false);
+	const onSubmit = async () => {
+		setLoading(true);
+		const data = await loginFunction({
+			username,
+			password
+		})
+		setLoading(false);
+		if (data.error) {
+			Toast.show(data.error, {
+				duration: Toast.durations.LONG,
+				position: Toast.positions.BOTTOM,
+				shadow: true,
+				animation: true,
+				hideOnPress: true,
+			})
+			return;
+		}
+
+		Toast.show("Login Sucessful", {
+			duration: Toast.durations.LONG,
+			position: Toast.positions.BOTTOM,
+			shadow: true,
+			animation: true,
+			hideOnPress: true,
+		})
+
+		await AsyncStorage.setItem('@oit:username', username);
+		await AsyncStorage.setItem('@oit:password', password);
+
+		navigation.navigate('Logger',
+			{
+				info: data,
+				username: username,
+				password: password
+			})
+	}
+
+	useEffect(() => {
+		if (username && password) {
+			setBtnActive(false)
+		} else {
+			setBtnActive(true)
+		}
+	}, [username, password, btnActive])
+
 	return (
 		<ImageBackground source={require('../assets/login_bg.jpg')} style={{ width: '100%', height: '100%' }}>
 			<View style={[styles.container]}>
-				<View
-					style={{
-						flexDirection: 'row',
-						justifyContent: 'center',
-						padding: 15,
-						backgroundColor: '#fff',
-						width: 200,
-						marginLeft: 80,
-						borderRadius: 10
-					}}
-				>
-					<Image style={{ width: 122, height: 55 }} source={require('../assets/logo_login_screen.png')} />
-				</View>
+
+				<Image
+					style={{ width: '50%', resizeMode: 'contain', alignSelf: 'center' }}
+					source={require('../assets/logo_login_screen.png')} />
+
 				<View style={{ paddingTop: 30, paddingBottom: 20 }} />
 				<View style={[styles.username]}>
-					<View
-						style={{
-							borderWidth: 1,
-							borderRadius: 5,
-							borderStyle: 'dashed',
-							borderColor: '#fff',
-							width: 270,
-							flexDirection: 'row',
-							justifyContent: 'center',
-							padding: 10
-						}}
-					>
-						<CustomInput
-							placeholder="Enter Username!"
-							placeholderTextColor="#fff"
-							value={username}
-							onChangeText={(val) => setUsername(val)}
-						/>
-					</View>
+
+					<CustomInput
+						placeholder="Enter Username"
+						value={username}
+						onChangeText={(val) => setUsername(val)}
+					/>
+
 				</View>
 				<View style={[styles.username]}>
-					<View
-						style={{
-							borderWidth: 1,
-							borderRadius: 5,
-							borderStyle: 'dashed',
-							borderColor: '#fff',
-							width: 260,
-							flexDirection: 'row',
-							justifyContent: 'center',
-							padding: 10
-						}}
-					>
-						<CustomInput
-							placeholder="Enter Password!"
-							secureTextEntry={true}
-							placeholderTextColor="#fff"
-							value={password}
-							onChangeText={(val) => setPassword(val)}
-						/>
-					</View>
+
+					<CustomInput
+						placeholder="Enter Password"
+						secureTextEntry={true}
+						value={password}
+						onChangeText={(val) => setPassword(val)}
+					/>
+
 				</View>
 				<View>
 					<View style={[styles.postionCenter]}>
-						{/* <CustomButton name="Login" onPress={() => navigation.navigate('Logger')} /> */}
-						<CustomButton name="Login" onPress={async () => {
-							const data = await loginFunction({
-								username,
-								password
-							})
-
-							if (data.error) {
-								console.log(data)
-								return;
-							}
-
-							navigation.navigate('Logger',
-								{
-									info: data,
-									username: username,
-									password: password
-								})
-						}} />
+						<CustomButton loading={loading} disabled={btnActive} style={{ marginTop: 25 }} name="Login" onPress={onSubmit} />
 					</View>
 				</View>
 			</View>
@@ -131,6 +130,6 @@ const styles = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'center',
 		borderWidth: 1,
-		marginBottom: 25
+		// marginBottom: 25
 	}
 });

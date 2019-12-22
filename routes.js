@@ -16,6 +16,7 @@ import {
 
 import Login from './src/screens/Login';
 import TimesheetLogger from './src/screens/TimesheetLogger'
+import SwitchScreen from './src/screens/SwitchScreen'
 
 
 const Main = createStackNavigator(
@@ -33,7 +34,7 @@ const Main = createStackNavigator(
 
 const Routes = createSwitchNavigator(
     {
-        //Switch: { screen: SwitchScreen },
+        Switch: { screen: SwitchScreen },
         Login: Main,
     },
     {
