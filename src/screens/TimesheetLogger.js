@@ -1,18 +1,24 @@
-import React, { useState, useEffect } from 'react';
-import { Text, View, ImageBackground, TouchableOpacity } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  Text,
+  View,
+  ImageBackground,
+  TouchableOpacity,
+  Image,
+} from 'react-native';
 import DateTimePicker from '@react-native-community/datetimepicker';
-import { format } from 'date-fns';
-import { toDate } from 'date-fns';
+import {format} from 'date-fns';
+import {toDate} from 'date-fns';
 import Toast from 'react-native-root-toast';
 import CustomButton from '../components/CustomButton';
 import CustomVectorIcons from '../components/CustomVectorIcons';
 import CustomPicker from '../components/CustomPicker';
 import styles from '../components/style';
 import CustomInput from '../components/CustomInput';
+import AsyncStorage from '@react-native-community/async-storage';
 
-const TimesheetLogger = ({ navigation }) => {
+const TimesheetLogger = ({navigation}) => {
   const [logDate, setLogDate] = useState(toDate(new Date(), 'P'));
-
 
   const [logType, setLogType] = useState(0);
   const [project, setProject] = useState(0);
@@ -51,13 +57,13 @@ const TimesheetLogger = ({ navigation }) => {
     }
 
     if (!valid) {
-      Toast.show("Please fill all the fields !!", {
+      Toast.show('Please fill all the fields !!', {
         duration: Toast.durations.LONG,
         position: Toast.positions.BOTTOM,
         shadow: true,
         animation: true,
         hideOnPress: true,
-      })
+      });
       return;
     }
     try {
@@ -76,13 +82,13 @@ const TimesheetLogger = ({ navigation }) => {
 
       await response.json();
       setSubmitting(false);
-      Toast.show("Logged successfully !!", {
+      Toast.show('Logged successfully !!', {
         duration: Toast.durations.LONG,
         position: Toast.positions.BOTTOM,
         shadow: true,
         animation: true,
         hideOnPress: true,
-      })
+      });
     } catch (e) {
       Toast.show(e.message, {
         duration: Toast.durations.LONG,
@@ -90,18 +96,18 @@ const TimesheetLogger = ({ navigation }) => {
         shadow: true,
         animation: true,
         hideOnPress: true,
-      })
+      });
     }
   };
 
   return (
     <ImageBackground
       source={require('../assets/login_bg.jpg')}
-      style={{ flex: 1, width: '100%', height: '100%' }}>
+      style={{flex: 1, width: '100%', height: '100%'}}>
       <View style={[styles.container]}>
         <View style={[styles.postionCenter]}>
           <View>
-            <View style={{ position: 'relative', flexDirection: 'row' }}>
+            <View style={{position: 'relative', flexDirection: 'row'}}>
               <View>
                 <Text
                   style={{
@@ -116,12 +122,12 @@ const TimesheetLogger = ({ navigation }) => {
               <TouchableOpacity
                 style={[styles.calanderStyling]}
                 onPress={() => setshowdatePicker(true)}>
-                <Text style={{ color: 'black', fontSize: 15 }}>
+                <Text style={{color: 'black', fontSize: 15}}>
                   {' '}
                   {format(logDate, 'dd/MM/yyyy')}{' '}
                 </Text>
               </TouchableOpacity>
-              <View style={{ position: 'absolute', top: 16, right: 0 }}>
+              <View style={{position: 'absolute', top: 16, right: 0}}>
                 <CustomVectorIcons name="calendar" size={18} color="black" />
               </View>
               {showdatePicker && (
@@ -134,7 +140,6 @@ const TimesheetLogger = ({ navigation }) => {
                     setshowdatePicker(false);
                     if (!date) return;
                     setLogDate(toDate(date));
-
                   }}
                 />
               )}
@@ -151,7 +156,6 @@ const TimesheetLogger = ({ navigation }) => {
               }}
               contentsArray={data.logtypeList}
             />
-
           </View>
         </View>
         <View style={[styles.postionCenter]}>
@@ -176,7 +180,6 @@ const TimesheetLogger = ({ navigation }) => {
               }}
               contentsArray={data.worktypeList}
             />
-
           </View>
         </View>
         <View style={[styles.postionCenter]}>
@@ -189,12 +192,9 @@ const TimesheetLogger = ({ navigation }) => {
               }}
               contentsArray={data.timeList}
             />
-
           </View>
         </View>
         <View style={[styles.postionCenter]}>
-
-
           <CustomInput
             placeholder="Description"
             placeholderTextColor="#fff"
@@ -203,7 +203,6 @@ const TimesheetLogger = ({ navigation }) => {
             multiline={true}
             numberOfLines={3}
           />
-
         </View>
         <View style={[styles.postionCenter]}>
           <CustomButton
@@ -227,5 +226,32 @@ const TimesheetLogger = ({ navigation }) => {
     </ImageBackground>
   );
 };
+TimesheetLogger.navigationOptions = ({navigation}) => ({
+  headerStyle: {
+    backgroundColor: 'rgba(0,0,0,0.5)',
+  },
+  headerBackground: (
+    <ImageBackground
+      source={require('../assets/login_bg.jpg')}
+      style={{flex: 1, width: '100%', height: '100%'}}></ImageBackground>
+  ),
+  headerLeft: (
+    <Image
+      style={[styles.headerLogostyling]}
+      source={require('../assets/logo_login_screen.png')}
+    />
+  ),
+  headerRight: (
+    <TouchableOpacity
+      style={[styles.logoutBorderStyling]}
+      onPress={async () => {
+        await AsyncStorage.removeItem('@oit:username');
+        await AsyncStorage.removeItem('@oit:password');
+        navigation.navigate('login');
+      }}>
+      <CustomVectorIcons name="logout" size={24} color="white" />
+    </TouchableOpacity>
+  ),
+});
 
 export default TimesheetLogger;

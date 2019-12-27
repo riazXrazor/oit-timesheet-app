@@ -13,12 +13,22 @@ import SwitchScreen from './src/screens/SwitchScreen';
 
 const Main = createStackNavigator(
   {
-    Switch: {screen: SwitchScreen},
-    Home: {screen: Login},
+    Switch: {
+      screen: SwitchScreen,
+      navigationOptions: {
+        header: null,
+      },
+    },
+    Home: {
+      screen: Login,
+      navigationOptions: {
+        header: null,
+      },
+    },
     Logger: {screen: TimesheetLogger},
   },
   {
-    headerMode: 'none',
+    // headerMode: 'none',
     navigationOptions: {
       headerVisible: false,
     },
