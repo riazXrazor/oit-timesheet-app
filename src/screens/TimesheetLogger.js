@@ -247,7 +247,7 @@ TimesheetLogger.navigationOptions = ({navigation}) => ({
       onPress={async () => {
         await AsyncStorage.removeItem('@oit:username');
         await AsyncStorage.removeItem('@oit:password');
-        navigation.navigate('login');
+        navigation.navigate('Loginscreen');
       }}>
       <CustomVectorIcons name="logout" size={24} color="white" />
     </TouchableOpacity>

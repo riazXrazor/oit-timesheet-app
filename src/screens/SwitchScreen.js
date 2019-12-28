@@ -75,6 +75,7 @@ const login = ({navigation}) => {
       if (username && password) {
         onSubmit(username, password);
       } else {
+        console.log('localstorage--empty');
         const resetAction = StackActions.reset({
           index: 0,
           actions: [NavigationActions.navigate({routeName: 'Home'})],

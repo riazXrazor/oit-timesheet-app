@@ -26,6 +26,12 @@ const Main = createStackNavigator(
       },
     },
     Logger: {screen: TimesheetLogger},
+    Loginscreen: {
+      screen: Login,
+      navigationOptions: {
+        header: null,
+      },
+    },
   },
   {
     // headerMode: 'none',
