@@ -9,6 +9,7 @@ import {createStackNavigator} from 'react-navigation-stack';
 
 import Login from './src/screens/Login';
 import TimesheetLogger from './src/screens/TimesheetLogger';
+import RemoteLogin from './src/screens/RemoteLogin';
 import SwitchScreen from './src/screens/SwitchScreen';
 
 const Main = createStackNavigator(
@@ -26,6 +27,7 @@ const Main = createStackNavigator(
       },
     },
     Logger: {screen: TimesheetLogger},
+    RemoteLogin: {screen: RemoteLogin},
     Loginscreen: {
       screen: Login,
       navigationOptions: {

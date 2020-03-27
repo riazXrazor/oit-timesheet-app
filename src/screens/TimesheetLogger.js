@@ -222,6 +222,15 @@ const TimesheetLogger = ({navigation}) => {
             }}
           />
         </View>
+        <View style={[styles.postionCenter]}>
+          <CustomButton
+            onPress={() => {
+              navigation.navigate('RemoteLogin');
+            }}
+            name="RemoteLogin"
+            width={150}
+          />
+        </View>
       </View>
     </ImageBackground>
   );
